@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}" )
+list(APPEND CMAKE_PREFIX_PATH @CMAKE_PREFIX_PATH@)
+
+include("${CMAKE_CURRENT_LIST_DIR}/StorkTargets.cmake")
+find_dependency(Kokkos)
