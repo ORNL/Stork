@@ -48,13 +48,6 @@ event values              3 × numEvents × FloatType
 
 The three RDF event values are `tm`, `tl`, and `cr`.
 
-{: .warning }
-The current binary representation has no magic number, schema version, byte
-order conversion, or integrity checksum. It writes native primitive values.
-Treat `.stork` as an efficient interchange format between compatible builds,
-not as a permanent archival format. Retain the producing Stork revision and
-floating-point type with archived datasets.
-
 The reader verifies both the file-type and floating-point tags. Reading a
 double-precision file into `SRDF_Dual<float>`, for example, fails rather than
 silently converting values.
@@ -88,9 +81,3 @@ x,y,z,tm,tl,cr
 Coordinates are calculated from the RDF header and local point index. CSV is
 useful for inspection and plotting, but it does not retain the complete grid
 header or numeric type and is less efficient than in-memory or binary coupling.
-
-`Output_RDF_csv` catches failures thrown while opening or writing and prints a
-message. Its exception-enabled `close()` occurs after that catch and can itself
-throw, so callers must not assume every failure merely prints and returns.
-Ensure the parent directory exists and verify the resulting file in automated
-workflows.

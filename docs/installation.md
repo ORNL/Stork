@@ -123,20 +123,6 @@ Confirm that the consumer and Stork use the same Kokkos installation and
 configuration. Mixing headers or package files from different Kokkos builds can
 produce compile, link, or runtime failures.
 
-Stork does not initialize MPI. An application such as Condor or Toucan may use
+Stork does not initialize MPI. Applications may use
 MPI around Stork, but the application owns `MPI_Init`/`MPI_Finalize` and its
 domain-decomposition policy.
-
-## Deploy the documentation
-
-The documentation is maintained on the orphan `gh-pages` branch. In the GitHub
-repository settings, choose **Pages > Deploy from a branch**, select
-`gh-pages`, and publish from `/(root)`. GitHub then builds the Jekyll site at
-`https://ornl.github.io/Stork/` whenever that branch changes.
-
-Before pushing documentation changes, build locally and check internal links:
-
-```sh
-bundle exec jekyll build --strict_front_matter
-bundle exec ruby scripts/check_links.rb _site /Stork
-```

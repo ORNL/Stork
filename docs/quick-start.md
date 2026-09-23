@@ -61,15 +61,15 @@ zero. The caller must enforce the range.
 
 ## Choose a fine factor
 
-For a coarse grid spacing \(\Delta x_c\) and integer fine factor \(f\), Stork
+For a coarse grid spacing \\(\Delta x_c\\) and integer fine factor \\(f\\), Stork
 creates a fine spacing
 
-\[
+\\[
 \Delta x_f = \frac{\Delta x_c}{f}.
-\]
+\\]
 
-For an axis containing \(N_c\) coarse nodes, the corresponding fine-grid extent
-is \(f(N_c-1)+1\) nodes. Larger factors increase interpolation work and the
+For an axis containing \\(N_c\\) coarse nodes, the corresponding fine-grid extent
+is \\(f(N_c-1)+1\\) nodes. Larger factors increase interpolation work and the
 number of potential phase-change events approximately with the refined volume.
 
 The Stork paper reports preserved morphology and texture through a factor of 16

@@ -12,10 +12,10 @@ independent simulation tools: it supplies shared data structures,
 transformations, and data movement so codes can exchange results efficiently
 across CPUs and accelerators.
 
-The current implementation supports thermal-to-microstructure coupling. It
-represents coarse thermal history in the sparse Super Reduced Data Format
-(SRDF), then interpolates it into fine-grid Reduced Data Format (RDF)
-phase-change events for a microstructure model.
+The current implementation supports thermal-to-microstructure coupling for
+microstructure codes that use the Reduced Data Format (RDF). It can either
+directly ingest a provided RDF or use a coarse thermal history in the sparse
+Super Reduced Data Format (SRDF) and interpolate it into a fine-grid RDF.
 
 [Install Stork](docs/installation/){: .btn .btn-primary }
 [Quick start](docs/quick-start/){: .btn }
@@ -28,16 +28,17 @@ scales. Passing a complete fine-grid temperature history between them can make
 storage and data movement more expensive than either simulation. Stork bridges
 the two grids with:
 
-- a sparse **Super Reduced Data Format (SRDF)** for active coarse cells;
-- Kokkos-parallel spatial and temporal interpolation;
-- a compact **Reduced Data Format (RDF)** containing phase-change events; and
-- host/device mirrors for file-based or in-memory workflows.
+- A sparse **Super Reduced Data Format (SRDF)** for active coarse cells.
+- Kokkos-parallel spatial and temporal interpolation.
+- Kokkos-parallel time-normalization.
+- A compact **Reduced Data Format (RDF)** containing phase-change events.
+- Host/device mirrors for file-based or in-memory workflows.
 
 The accompanying paper reports more than two orders of magnitude reduction in
-thermal-data generation time and file size for the studied workflows, and
-preservation of grain morphology and texture for interpolation factors through
-16. Those findings describe the paper's configurations; users should validate
-the interpolation factor for their own process conditions.
+thermal-data generation time and file size for the studied workflows, while
+preserving grain morphology and texture for lower interpolation factors. Those
+findings describe the paper's configurations; users should validate the
+interpolation factor for their own process conditions.
 
 ## Requirements
 
@@ -53,7 +54,6 @@ on a CPU or accelerator.
 | Convert an SRDF file | [Quick start](docs/quick-start/) |
 | Understand SRDF and RDF | [Data model](reference/data-model/) |
 | Integrate Stork in C++ | [Library API](reference/api/) |
-| Connect Condor and Toucan | [Integration tutorial](tutorials/condor-toucan/) |
 | Understand interpolation | [Interpolation](reference/interpolation/) |
 | Check preconditions and limitations | [Contracts and limitations](reference/contracts/) |
 | Read the methodology paper | [Paper](about/paper/) |
@@ -62,11 +62,3 @@ on a CPU or accelerator.
 
 - [Benjamin Stump](https://www.ornl.gov/staff-profile/benjamin-c-stump)
 - [John Coleman](https://www.ornl.gov/staff-profile/john-s-coleman)
-
-## Scope
-
-Stork performs sparse data representation, interpolation, data movement, and
-serialization. It is not itself a thermal solver or a microstructure solver.
-Today, a thermal code must construct SRDF data, and a downstream microstructure
-application such as Toucan must consume the resulting RDF events. Additional
-coupling directions and data models are future extensions of the middleware.

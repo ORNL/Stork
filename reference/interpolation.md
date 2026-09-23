@@ -12,7 +12,7 @@ temperature intervals into fine-grid phase-change events.
 
 ## Spatial interpolation
 
-For normalized position \((x_d,y_d,z_d)\) inside a coarse cell, Stork applies
+For normalized position \\((x_d,y_d,z_d)\\) inside a coarse cell, Stork applies
 trilinear interpolation to its eight corner temperatures. The operation is
 performed once at `t_prev` and once at `t_cur`.
 
@@ -65,12 +65,6 @@ sets `numEvents` to the retained count but currently leaves the event views at
 the pre-trim allocation size. Consumers must iterate to `numEvents`, not to
 `view.extent(0)`.
 
-{: .warning }
-`Output_RDF_binary` currently derives its record count from the host view
-extent. Do not serialize an RDF returned by trimmed interpolation unless its
-views have first been compacted to `numEvents`. The Toucan integration consumes
-the trimmed object in memory and iterates the logical count.
-
 `Trim_RDF_in_Z` is a separate operation that removes unused fine-grid depth
 below the lowest event and remaps local point indices. It requires at least one
 event. It changes the header in the selected execution space and the host
@@ -115,6 +109,3 @@ arrays proportional to the sparse input and detected events. It performs two
 passes over all candidate fine points plus parallel scans and sorts. Increasing
 the refinement factor therefore increases both work and possible event count
 approximately with refined volume.
-
-The paper's factor-of-16 result is a validation result for its LPBF studies. A
-new workflow should perform its own convergence study.

@@ -13,8 +13,6 @@ the library fits in a coupled simulation.
 2. Follow the [quick start](quick-start/) to inspect the converter workflow.
 3. Read [How Stork works](how-stork-works/) before choosing an interpolation
    factor or implementing a new producer.
-4. Use the [Condor and Toucan tutorial](../tutorials/condor-toucan/) for a
-   source-grounded end-to-end integration.
 
 Stork's public interface is provided by `Stork_Core.hpp`. The
 [reference](../reference/) documents the data structures, algorithms, file

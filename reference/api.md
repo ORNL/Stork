@@ -245,10 +245,6 @@ prior cluster and a trailing gap can create an empty counted cluster. The
 only `numClusters - 1` inserted gaps, shifting the intended overall center by
 `-minGap/2` rather than centering it at zero.
 
-Older integrations call `Norm_Times_For_Toucan`. That name is not present in
-the current Stork tree. Renaming that call to `Normalize_SRDF_Times` resolves
-the symbol mismatch but does not resolve the algorithmic issues above.
-
 ## Input and output
 
 ```cpp

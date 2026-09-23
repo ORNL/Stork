@@ -34,15 +34,12 @@ The paper demonstrates Stork by coupling the semi-analytic thermal solver
 3DThesis with the time-parallel cellular automata solver Toucan. For the studied
 workflows it reports:
 
-- more than two orders of magnitude reduction in thermal-data generation time
-  and file size relative to the prior workflow;
-- file-based CPU and GPU-resident in-memory implementations; and
-- preservation of grain morphology and crystallographic texture for
-  interpolation factors through 16 in the reported LPBF studies.
-
-These are results for the published configurations rather than guarantees for
-every thermal field or microstructure model. Document the convergence study
-used for your application.
+- More than two orders of magnitude reduction in thermal-data generation time
+  and file size relative to the prior workflow.
+- File-based CPU and GPU-resident in-memory implementations.
+- Preservation of grain morphology and crystallographic texture for smaller
+  interpolation factors (though this result is for the published configuration
+  rather than a guarantee for every thermal field or microstructure model).
 
 ## License
 

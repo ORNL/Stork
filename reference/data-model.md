@@ -27,15 +27,15 @@ I/O; leave it unused.
 
 Coordinates follow
 
-\[
+\\[
 (x,y,z)=(x_0,y_0,z_0)+\Delta x(i,j,k).
-\]
+\\]
 
 Local point indices use `k` as the fastest-varying dimension:
 
-\[
+\\[
 p=i(N_jN_k)+jN_k+k.
-\]
+\\]
 
 The class supplies conversions among local point indices, local/global grid
 indices, and global coordinates.

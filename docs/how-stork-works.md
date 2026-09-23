@@ -34,20 +34,20 @@ the critical temperature, linear interpolation in time locates the crossing.
 Together, the three spatial dimensions and time form the paper's quad-linear
 interpolation.
 
-For endpoint temperatures \(T_0\) and \(T_1\), endpoint times \(t_0\) and
-\(t_1\), and critical temperature \(T_c\), Stork requires \(t_1>t_0\). The
+For endpoint temperatures \\(T_0\\) and \\(T_1\\), endpoint times \\(t_0\\) and
+\\(t_1\\), and critical temperature \\(T_c\\), Stork requires \\(t_1>t_0\\). The
 crossing time is
 
-\[
+\\[
 t_c = t_0 + \frac{T_c-T_0}{T_1-T_0}(t_1-t_0).
-\]
+\\]
 
 During a forward-time cooling interval, Stork records the positive cooling-rate
 magnitude
 
-\[
+\\[
 \dot{T}_{cool} = \frac{T_0-T_1}{t_1-t_0}.
-\]
+\\]
 
 ## 3. Assemble phase-change histories
 
@@ -100,16 +100,9 @@ must provide complete phase-change cycles. Stork creates fine-grid events but
 does not decide an MPI decomposition. The consumer decides which events belong
 to each microstructure subdomain and how `tm`, `tl`, and `cr` drive its model.
 
-The current [Condor and Toucan integration]({% link tutorials/condor-toucan.md %})
-illustrates that separation: Condor populates an SRDF, Stork interpolates and
-trims it, and Toucan consumes the RDF.
-
 ## Relationship to the paper
 
 The [Stork paper]({% link about/paper.md %}) demonstrates the method by coupling
 the semi-analytic thermal solver 3DThesis to the time-parallel cellular automata
 solver Toucan. The paper's performance and validation results apply to those
-studies. The current repository exposes solver-neutral Stork containers and is
-also integrated by the separate Condor and Toucan repositories; those current
-integration APIs are source-code behavior, not additional claims made by the
-paper.
+studies.
