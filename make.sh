@@ -1,28 +1,31 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -euo pipefail
+# Clean previous build
+rm -rf build
+clear
 
-project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-build_dir="${STORK_BUILD_DIR:-${project_dir}/build}"
-install_dir="${STORK_INSTALL_DIR:-${project_dir}/install}"
-build_type="${CMAKE_BUILD_TYPE:-Release}"
-parallel_jobs="${CMAKE_BUILD_PARALLEL_LEVEL:-$(nproc)}"
+# Set environment variables
+export NVCC_WRAPPER_DEFAULT_COMPILER=mpic++
 
-cmake_args=(
-    -S "${project_dir}"
-    -B "${build_dir}"
-    -D "CMAKE_BUILD_TYPE=${build_type}"
-    -D "CMAKE_INSTALL_PREFIX=${install_dir}"
-)
+# Set environment variable for Stork installation path
+export KOKKOS_DIR=~/kokkos/build/install
 
-if [[ -n "${Kokkos_DIR:-}" ]]; then
-    cmake_args+=(-D "Kokkos_DIR=${Kokkos_DIR}")
-elif [[ -f "${HOME}/kokkos/build/KokkosConfig.cmake" ]]; then
-    cmake_args+=(-D "Kokkos_DIR=${HOME}/kokkos/build")
-fi
+# Create build directory
+mkdir -p build
+pushd build
 
-cmake "${cmake_args[@]}" "$@"
-cmake --build "${build_dir}" --parallel "${parallel_jobs}"
-cmake --install "${build_dir}"
+# CMake configuration
+cmake \
+  -D CMAKE_BUILD_TYPE="Release" \
+  -D CMAKE_INSTALL_PREFIX=install \
+  -D CMAKE_CXX_FLAGS="-fopenmp -O3 -ffast-math -march=znver3 -mtune=znver3" \
+  -D CMAKE_PREFIX_PATH="${KOKKOS_DIR}" \
+  -D Toucan_REQUIRE_EXTERNAL_JSON=ON \
+  -D CMAKE_CUDA_ARCHITECTURES="86" \
+  ..
 
-echo "Stork installed to ${install_dir}"
+# Build the project
+make -j24 install  # Use all available CPU cores for faster compilation
+
+# Return to original directory
+popd

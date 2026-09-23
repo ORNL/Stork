@@ -55,12 +55,18 @@ namespace Stork::IO {
             throw std::runtime_error("Failed to open file: " + binFile);
         }
 
-        // Get sizes
-        const uint32_t size = RDF.host_data.cellNum_view.size();
+        // Get the logical size. The data views may retain extra capacity after
+        // operations such as trimmed interpolation.
+        const uint32_t size = RDF.numEvents;
+        const size_t solInfoSize = 3 * static_cast<size_t>(size);
         const auto& indexData = RDF.host_header.index_view;
         const auto& floatData = RDF.host_header.floatType_view;
         const auto& cellNumData = RDF.host_data.cellNum_view;
         const auto& solInfoData = RDF.host_data.solInfo_view;
+
+        if (cellNumData.size() < size || solInfoData.size() < solInfoSize) {
+            throw std::runtime_error("RDF numEvents exceeds the allocated host data");
+        }
 
         // Reserve buffer
         size_t bufferSize = sizeof(FileType) +                      // File type
@@ -68,8 +74,8 @@ namespace Stork::IO {
                             sizeof(uint32_t) +                      // Size
                             indexData.size() * sizeof(uint32_t) +   // Header index information
                             floatData.size() * sizeof(FloatType) +  // Header float information
-                            cellNumData.size() * sizeof(uint32_t) + // Data cellNum
-                            solInfoData.size() * sizeof(FloatType); // Data solInfo
+                            size * sizeof(uint32_t) +               // Data cellNum
+                            solInfoSize * sizeof(FloatType);        // Data solInfo
         std::vector<char> buffer;
         buffer.reserve(bufferSize);
 
@@ -91,8 +97,12 @@ namespace Stork::IO {
         // Append all data sections
         writeViewData(indexData);
         writeViewData(floatData);
-        writeViewData(cellNumData);
-        writeViewData(solInfoData);
+        using IndexViewType = std::decay_t<decltype(cellNumData)>;
+        using FloatViewType = std::decay_t<decltype(solInfoData)>;
+        const auto cellNumSubview = IndexViewType(cellNumData.data(), size);
+        const auto solInfoSubview = FloatViewType(solInfoData.data(), solInfoSize);
+        writeViewData(cellNumSubview);
+        writeViewData(solInfoSubview);
 
         // Write buffer to file
         os.write(buffer.data(), buffer.size());
