@@ -18,10 +18,6 @@ exclude:
   - README.md
   - scripts/
   - vendor/
-  - docs/.bundle/
-  - docs/.jekyll-cache/
-  - docs/_site/
-  - docs/vendor/
 
 defaults:
   - scope:
